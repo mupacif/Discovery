@@ -1,11 +1,15 @@
 package be.formation.mupacif.discovery.db;
 
+import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 
@@ -15,7 +19,7 @@ import be.formation.mupacif.discovery.model.Location;
 import static be.formation.mupacif.discovery.db.DataContract.BASE_CONTENT_URI;
 
 
-public class InterestDAO implements BaseColumns{
+public class InterestDAO  extends ContentProvider implements BaseColumns{
 
     public static final String TABLE_NAME = "interest";
 
@@ -38,10 +42,28 @@ public class InterestDAO implements BaseColumns{
     //path for interests directory
     public static final String PATH_INTERESTS = "interests";
 
-
+    //    region contentProvider data
     //URI for the table through for the Content Resolver
     public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_INTERESTS).build();
 
+    public static final int INTEREST = 100;
+    public static final int INTEREST_WITH_ID = 101;
+
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+
+
+    public static UriMatcher buildUriMatcher() {
+
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(DataContract.AUTHORITY, InterestDAO.PATH_INTERESTS, INTEREST);
+        uriMatcher.addURI(DataContract.AUTHORITY, InterestDAO.PATH_INTERESTS + "/#", INTEREST_WITH_ID);
+
+        return uriMatcher;
+    }
+
+
+    //endregion
 
     Context context;
     SQLiteDatabase database;
@@ -82,14 +104,22 @@ public class InterestDAO implements BaseColumns{
     }
 
     /**
-     * When it's used from a content provider
-     * @param cv content values
-     * @return id of inserted element
+     * Insert with a uri
+     * @param uri
+     * @param interest
+     * @return inserted element uri
      */
-    public long insert(ContentValues cv)
+    public Uri insert(Uri uri,
+                      Interest interest)
     {
-        return database.insert(TABLE_NAME,null,cv);
+        ContentValues cv= new ContentValues();
+        cv.put(COL_TITLE, interest.getTitle());
+        cv.put(COL_DATE, interest.getDate().getTimeInMillis());
+        cv.put(COL_LOCATION, locationDAO.insert(interest.getLocation()));
+        cv.put(COL_DESCRIPTION, interest.getDescription());
+        return insert(uri,cv);
     }
+
 
     /**
      * Get all Interests cursor
@@ -136,7 +166,7 @@ public class InterestDAO implements BaseColumns{
     {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(c.getLong(c.getColumnIndex(COL_DATE)));
-        Location place =locationDAO.getLocationById(c.getLong(c.getColumnIndex(COL_LOCATION));
+        Location place =locationDAO.getLocationById(c.getLong(c.getColumnIndex(COL_LOCATION)));
         Interest interest = new Interest(
                 c.getLong(c.getColumnIndex(_ID)),
                 c.getString(c.getColumnIndex(COL_TITLE)),
@@ -162,7 +192,87 @@ public class InterestDAO implements BaseColumns{
         locationDAO.close();
     }
 
+// region ContendProvider
+    @Override
+    public boolean onCreate() {
+        this.context = getContext();
+        locationDAO = new LocationDAO(context);
+        dbHelper = new DbHelper(context);
+        return true;
 
+    }
 
+    @Nullable
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        openReadable();
 
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+        switch (match) {
+            case INTEREST:
+                retCursor =  database.query(InterestDAO.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            // Default exception
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        // Set a notification URI on the Cursor and return that Cursor
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        close();
+        // Return the desired Cursor
+        return retCursor;
+    }
+
+    @Nullable
+    @Override
+    public String getType(Uri uri) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        openWritable();
+
+        int match = sUriMatcher.match(uri);
+        Uri returnUri;
+        switch (match){
+            case INTEREST:
+                long id = database.insert(TABLE_NAME, null, values);
+                if ( id > 0 ) {
+                    returnUri = ContentUris.withAppendedId(CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return returnUri;
+
+    }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        return 0;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        return 0;
+    }
+
+    //endregion
 }
