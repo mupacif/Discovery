@@ -27,7 +27,7 @@ public class LocationDAO implements BaseColumns {
 
     public static final String CREATE_TABLE = "CREATE TABLE"+ TABLE_NAME
     +"("+ _ID+"INTEGER PRIMARY KEY AUTOINCREMENT,"
-            +COL_NAME+" TEXT NOT NULL,"
+            +COL_NAME+" TEXT ,"
             +COL_LAT+" REAL NOT NULL,"
             +COL_LNG+" REAL NOT NULL"
             +");";

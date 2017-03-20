@@ -11,6 +11,26 @@ public class Interest {
     private Location location;
     private Calendar date;
 
+    @Override
+    public String toString() {
+        return "Interest{" +
+                "title='" + title + '\'' +
+                ", date=" + date +
+                ", location=" + location +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    public Interest() {
+    }
+
+    public Interest(String title, String description, Location location, Calendar date) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.date = date;
+    }
+
     public Interest(long id, String title, String description, Location location, Calendar date) {
         this.id = id;
         this.title = title;

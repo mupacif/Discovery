@@ -11,6 +11,14 @@ public class Location {
     private String name;
     private LatLng location;
 
+    @Override
+    public String toString() {
+        return "Location{" +
+                "name='" + name + '\'' +
+                ", location=" + location +
+                '}';
+    }
+
     public Location(long id, String name, LatLng location) {
         this.id = id;
         this.name = name;
