@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -37,6 +38,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(INTEREST_LOADER_ID,null,this);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT)
+        {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int id = (int) viewHolder.itemView.getTag();
+                ((InterestApplication)getApplication()).getDataManager().delete(id);
+                getSupportLoaderManager().restartLoader(INTEREST_LOADER_ID,null, MainActivity.this);
+
+            }
+        }).attachToRecyclerView(recyclerView);
     }
     public void onClickAddInterest(View view)
     {

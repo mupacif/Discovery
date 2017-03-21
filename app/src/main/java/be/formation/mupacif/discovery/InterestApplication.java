@@ -56,6 +56,13 @@ public class InterestApplication extends Application {
             interestDAO.close();
         }
 
+        public void delete(long idInterest)
+        {
+            interestDAO.openWritable();
+            interestDAO.delete(idInterest);
+            interestDAO.close();
+        }
+
         public  Cursor getAllInterests()
         {
 

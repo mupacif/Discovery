@@ -189,6 +189,11 @@ public class InterestDAO  extends ContentProvider implements BaseColumns{
         database.delete(TABLE_NAME, _ID+"="+interest.getId(),null);
     }
 
+    public void delete(long id)
+    {
+        database.delete(TABLE_NAME, _ID+"="+id,null);
+    }
+
     public void close()
     {
         database.close();
