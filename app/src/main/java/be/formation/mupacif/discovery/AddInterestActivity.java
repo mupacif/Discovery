@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Calendar;
 
 import be.formation.mupacif.discovery.databinding.ActivityAddInterestBinding;
+import be.formation.mupacif.discovery.db.InterestDAO;
 import be.formation.mupacif.discovery.model.Interest;
 import be.formation.mupacif.discovery.model.Location;
 
@@ -93,6 +94,9 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
                 calendar);
 
         Toast.makeText(this,interest+"",Toast.LENGTH_SHORT).show();
+
+        ((InterestApplication)getApplication()).getDataManager().insert(interest);
+        finish();
     }
 
     @Override

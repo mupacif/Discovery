@@ -26,15 +26,16 @@ public class InterestDAO  extends ContentProvider implements BaseColumns{
 
     public static final String COL_TITLE = "title";
     public static final String COL_DATE = "date";
-    public static final String COL_LOCATION = "date";
+    public static final String COL_LOCATION = "idLocation";
     public static final String COL_DESCRIPTION="description";
 
-    public static final String CREATE_TABLE ="CREATE TABLE"+ TABLE_NAME
-                                +"("+ _ID+"INTEGER PRIMARY KEY AUTOINCREMENT,"
+    public static final String CREATE_TABLE ="CREATE TABLE "+ TABLE_NAME
+                                +"("+ _ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                                 +COL_TITLE+" TEXT NOT NULL,"
                                 +COL_DATE+" INTEGER NOT NULL,"
                                 +COL_LOCATION+" INTEGER,"
-                                +COL_DESCRIPTION+" TEXT"
+                                +COL_DESCRIPTION+" TEXT,"
+                                +"FOREIGN KEY("+COL_LOCATION+") REFERENCES "+LocationDAO.TABLE_NAME+"("+LocationDAO._ID+")"
                                 +");";
 
     public static final String UPGRADE_TABLE = "DROP TABLE "+TABLE_NAME;
@@ -74,6 +75,7 @@ public class InterestDAO  extends ContentProvider implements BaseColumns{
     public InterestDAO(Context context)
     {
         this.context = context;
+        dbHelper = new DbHelper(context);
         locationDAO = new LocationDAO(context);
     }
 
@@ -119,6 +121,8 @@ public class InterestDAO  extends ContentProvider implements BaseColumns{
         cv.put(COL_DESCRIPTION, interest.getDescription());
         return insert(uri,cv);
     }
+
+
 
 
     /**

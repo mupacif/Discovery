@@ -25,8 +25,8 @@ public class LocationDAO implements BaseColumns {
 
 
 
-    public static final String CREATE_TABLE = "CREATE TABLE"+ TABLE_NAME
-    +"("+ _ID+"INTEGER PRIMARY KEY AUTOINCREMENT,"
+    public static final String CREATE_TABLE = "CREATE TABLE "+ TABLE_NAME
+    +"("+ _ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
             +COL_NAME+" TEXT ,"
             +COL_LAT+" REAL NOT NULL,"
             +COL_LNG+" REAL NOT NULL"
@@ -48,19 +48,20 @@ public class LocationDAO implements BaseColumns {
 
     public LocationDAO(Context context)
     {
+        dbHelper = new DbHelper(context);
         this.context = context;
     }
 
     public LocationDAO openWritable()
     {
-        dbHelper = new DbHelper(context);
+
         database = dbHelper.getWritableDatabase();
         return this;
     }
 
     public LocationDAO openReadable()
     {
-        dbHelper = new DbHelper(context);
+
         database = dbHelper.getReadableDatabase();
         return this;
     }

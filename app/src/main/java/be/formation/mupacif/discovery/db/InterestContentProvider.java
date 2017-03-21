@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import be.formation.mupacif.discovery.model.Interest;
 
@@ -48,6 +49,7 @@ public class InterestContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        Log.e(getClass().getSimpleName(),"Content provider i choose you !!");
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         int match = sUriMatcher.match(uri);

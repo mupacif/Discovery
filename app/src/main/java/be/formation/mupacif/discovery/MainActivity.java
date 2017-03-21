@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String TAG = MainActivity.class.getSimpleName();
     RecyclerView recyclerView;
     CustomCursorAdapter adapter;
+    //in case we have other loaders
+    private static final int INTEREST_LOADER_ID = 0;
 
 
     @Override
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         adapter = new CustomCursorAdapter(this);
         recyclerView.setAdapter(adapter);
+
+        getSupportLoaderManager().initLoader(INTEREST_LOADER_ID,null,this);
     }
     public void onClickAddInterest(View view)
     {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             protected void onStartLoading() {
                 //if some data were already loaded
+                Log.e(TAG,"Starting of loading");
                 if(data!=null)
                         deliverResult(data);
                 else
@@ -64,10 +69,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 try
                 {
                     return getContentResolver().query(InterestDAO.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            null);
+                        null,
+                        null,
+                        null,
+                        null);
                 }catch (Exception e)
                 {
                     Log.e(TAG,"Failed to asynchronously load data.");
@@ -76,7 +81,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
 
             }
+
+            @Override
+            public void deliverResult(Cursor data) {
+                Log.e(TAG,"Loading finished, cursor size:"+data.getCount());
+                this.data = data;
+                super.deliverResult(data);
+            }
         };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //relaunch the loader to gather all interests
+        getSupportLoaderManager().restartLoader(INTEREST_LOADER_ID,null,this);
     }
 
     /**
@@ -86,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+       Log.e(TAG,"onLoadFinished: data size:"+data.getCount());
         adapter.swapCursor(data);
     }
 
@@ -95,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-            adapter.swapCursor(null);
+        Log.e(TAG,"reset loader");
+        adapter.swapCursor(null);
     }
 }

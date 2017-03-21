@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import be.formation.mupacif.discovery.db.InterestDAO;
 
 public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.InterestViewHolder> {
 
+    public final static String TAG = "CustomCursorAdapter";
     private Cursor cursor;
     private Context context;
 
@@ -39,14 +41,16 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
      */
     @Override
     public void onBindViewHolder(InterestViewHolder holder, int position) {
-
-
-
+        int idIndex = cursor.getColumnIndex(InterestDAO._ID);
         int idTitle = cursor.getColumnIndex(InterestDAO.COL_TITLE);
 
+        cursor.moveToPosition(position); //get the right  position
+        //get  values
         String description = cursor.getString(idTitle);
+        final int id = cursor.getInt(idIndex);
 
-        cursor.moveToPosition(position);
+        //values settings
+        holder.itemView.setTag(id);
         holder.interstNameView.setText(description);
     }
 
@@ -54,8 +58,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     public int getItemCount() {
         if(cursor == null)
         return 0;
-        else
-            return cursor.getCount();
+
+
+        return cursor.getCount();
     }
 
     class InterestViewHolder extends RecyclerView.ViewHolder
@@ -69,6 +74,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     }
 
     public Cursor swapCursor(Cursor c) {
+        Log.e(TAG,"swapcursor");
         // check if this cursor is the same as the previous cursor (mCursor)
         if (cursor == c) {
             return null; // bc nothing has changed
