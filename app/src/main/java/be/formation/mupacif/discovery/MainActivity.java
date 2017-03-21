@@ -2,6 +2,7 @@ package be.formation.mupacif.discovery;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -44,12 +45,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+
+                target.itemView.setBackgroundColor(Color.BLUE);
+                Log.i(TAG,"moving it");
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
                 int id = (int) viewHolder.itemView.getTag();
+                viewHolder.itemView.setBackgroundColor(Color.BLUE);
                 ((InterestApplication)getApplication()).getDataManager().delete(id);
                 getSupportLoaderManager().restartLoader(INTEREST_LOADER_ID,null, MainActivity.this);
 
