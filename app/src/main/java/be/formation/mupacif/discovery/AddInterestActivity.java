@@ -1,10 +1,16 @@
 package be.formation.mupacif.discovery;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -14,12 +20,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import be.formation.mupacif.discovery.databinding.ActivityAddInterestBinding;
-import be.formation.mupacif.discovery.db.InterestDAO;
 import be.formation.mupacif.discovery.model.Interest;
 import be.formation.mupacif.discovery.model.Location;
 
@@ -29,11 +34,15 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
     private ActivityAddInterestBinding dataBindind;
     Place place;
     public static final int PLACE_PICKER_REQUEST = 1;
+    private TextView dateTv;
+    Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_interest);
         dataBindind = DataBindingUtil.setContentView(this, R.layout.activity_add_interest);
+        dateTv = (TextView)findViewById(R.id.tv_addInterest_chooseDate);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -43,6 +52,9 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy");
+        dateTv.setText(dateFormat.format(calendar.getTime()));
 
     }
 
@@ -58,8 +70,7 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
         super.onStop();
     }
 
-    public void onClickToMap(View view)
-    {
+    public void onClickToMap(View view) {
 
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -81,21 +92,21 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
             }
         }
     }
-    public void save(View view)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(dataBindind.dpAddinterestDate.getYear(),dataBindind.dpAddinterestDate.getMonth(),dataBindind.dpAddinterestDate.getDayOfMonth());
+
+    public void save(View view) {
+
         Location location = new Location(place.getName().toString(), place.getLatLng());
         Interest interest =
                 new Interest(
                         dataBindind.etAddinterestTitle.getText().toString(),
                         dataBindind.etAddinterestDescription.getText().toString(),
                         location,
-                calendar);
+                        calendar);
 
-        Toast.makeText(this,interest+"",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, interest + "", Toast.LENGTH_SHORT).show();
 
-        ((InterestApplication)getApplication()).getDataManager().insert(interest);
+
+        ((InterestApplication) getApplication()).getDataManager().insert(interest);
         finish();
     }
 
@@ -112,5 +123,60 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+
+    public void pickDate(View view) {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.setDateSetListener(new DatePickerFragment.OnDateSetListener() {
+            @Override
+            public void dateSet(int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.YEAR, year);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy");
+                dateTv.setText(dateFormat.format(calendar.getTime()));
+            }
+        });
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+
+
+    }
+
+
+
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        public interface OnDateSetListener
+        {
+            void dateSet(int year, int month, int dayOfMonth);
+        }
+
+        OnDateSetListener dateSetListener;
+
+        public void setDateSetListener(OnDateSetListener dateSetListener)
+        {
+            this.dateSetListener = dateSetListener;
+        }
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+
+            // Create a new instance of TimePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
+        }
+
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            Log.i("DatePickerDialog", "date set");
+
+            this.dateSetListener.dateSet(year,month,dayOfMonth);
+
+        }
     }
 }

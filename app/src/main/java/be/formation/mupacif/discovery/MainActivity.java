@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         recyclerView = (RecyclerView) findViewById(R.id.rv_interest);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -144,4 +145,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.e(TAG,"reset loader");
         adapter.swapCursor(null);
     }
+
+
 }
