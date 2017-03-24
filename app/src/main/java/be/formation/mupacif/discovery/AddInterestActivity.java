@@ -2,12 +2,15 @@ package be.formation.mupacif.discovery;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
     public static final int PLACE_PICKER_REQUEST = 1;
     private TextView dateTv;
     Calendar calendar;
+    TextView locationTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,7 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
             if (resultCode == RESULT_OK) {
                 place = PlacePicker.getPlace(data, this);
                 String toastMsg = String.format("Place: %s", place.getName());
+                dataBindind.btAddinterestAddLocation.setText(place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             }
         }
@@ -108,6 +113,32 @@ public class AddInterestActivity extends AppCompatActivity implements GoogleApiC
 
         ((InterestApplication) getApplication()).getDataManager().insert(interest);
         finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onBackPressed() {
+
+
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        AddInterestActivity.super.onBackPressed();
+                    }
+                }).create().show();
+
     }
 
     @Override
