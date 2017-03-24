@@ -27,7 +27,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="X" />
+                    android:text="X"
+                    style="@style/toolBarTextFont"/>
 
                 <android.support.v4.widget.Space
                     android:layout_width="0dp"
@@ -39,7 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="save"
-                    android:text="save" />
+                    android:text="SAVE"
+                    style="@style/toolBarTextFont"/>
             </LinearLayout>
 
             <EditText
@@ -49,8 +51,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:ems="10"
-                android:hint="title"
-                android:inputType="textPersonName" />
+                android:hint="Title"
+                style="@style/toolBarTextFont"/>
         </LinearLayout>
 
 
