@@ -16,11 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <provider
@@ -30,7 +26,9 @@
 
         <activity
             android:name=".AddInterestActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+        </activity>
+
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -39,7 +37,13 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD-xBHbkZoMdTlyi93e6fIQhtkR0PxiMrE" />
 
-        <activity android:name=".UserScreen"></activity>
+        <activity android:name=".UserScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
