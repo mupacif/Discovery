@@ -2,7 +2,13 @@ package be.formation.mupacif.discovery;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     CustomCursorAdapter adapter;
     //in case we have other loaders
     private static final int INTEREST_LOADER_ID = 0;
+    private Paint p = new Paint();
 
 
     @Override
@@ -47,20 +54,72 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
 
-                target.itemView.setBackgroundColor(Color.BLUE);
-                Log.i(TAG,"moving it");
                 return false;
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
 
-                int id = (int) viewHolder.itemView.getTag();
-                viewHolder.itemView.setBackgroundColor(Color.BLUE);
-                ((InterestApplication)getApplication()).getDataManager().delete(id);
-                getSupportLoaderManager().restartLoader(INTEREST_LOADER_ID,null, MainActivity.this);
+                boolean notDeleted=false;
+                Snackbar snackbar = Snackbar
+                        .make(recyclerView, "EVENT REMOVED", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                 adapter.notifyDataSetChanged();
+                            }
+                        });
+                snackbar.addCallback(new Snackbar.Callback(){
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        if(event == DISMISS_EVENT_TIMEOUT)
+                        {
+                            int id = (int) viewHolder.itemView.getTag();
+
+                            ((InterestApplication)getApplication()).getDataManager().delete(id);
+                            getSupportLoaderManager().restartLoader(INTEREST_LOADER_ID,null, MainActivity.this);
+                        }
+                    }
+                });
+                snackbar.show();
+
 
             }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                Bitmap icon;
+
+                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if(dX > 0){
+                        p.setColor(Color.argb(255,170,255,0));
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
+                        c.drawRect(background,p);
+                   /*     icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_edit_white);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
+                        c.drawBitmap(icon,null,icon_dest,p);*/
+                    } else {
+
+                        int tmpColor=Math.round((int)((dX/-2000.0)*100));
+                        p.setColor(Color.argb(255,172+tmpColor,162-tmpColor,162-tmpColor));
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_white);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
+                        c.drawBitmap(icon,null,icon_dest,p);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+
         }).attachToRecyclerView(recyclerView);
     }
     public void onClickAddInterest(View view)
