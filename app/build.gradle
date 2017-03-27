@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+
     defaultConfig {
+
         vectorDrawables.useSupportLibrary = true
     }
     dataBinding
@@ -40,6 +42,7 @@ dependencies {
     //fap button
     compile 'com.android.support:design:25.1.0'
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
     compile 'com.android.support:appcompat-v7:23.2.0'
 
