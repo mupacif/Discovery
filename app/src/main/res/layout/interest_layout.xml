@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +14,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="8dp"
-        android:background="@drawable/element_selector"
+
         >
 
 
@@ -25,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/primary_text_light"
-            style="@style/TextAppearance.AppCompat.Medium" />
+            style="@style/TextAppearance.AppCompat.Medium"
+           />
 
         <!-- An empty view for spacing out the description and priority views -->
         <View
