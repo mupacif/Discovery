@@ -30,10 +30,13 @@ public class UserScreen extends AppCompatActivity implements SigninFragment.Sign
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             isSigningIn = savedInstanceState.getBoolean(IS_SIGNIN, true);
-            if(true)
+            if(isSigningIn)
             signInScreen();
             else
                 signUpScreen();
+        }else
+        {
+            signInScreen();
         }
 
 
@@ -44,7 +47,7 @@ public class UserScreen extends AppCompatActivity implements SigninFragment.Sign
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         SignupFragment signupFragment = SignupFragment.getInstance();
         signupFragment.setListener(this);
-        fragmentTransaction.add(R.id.users_sign, SignupFragment.getInstance(),"signup");
+        fragmentTransaction.replace(R.id.users_sign, SignupFragment.getInstance(),"signup");
         fragmentTransaction.commit();
     }
     public void signInScreen()
@@ -100,12 +103,12 @@ public class UserScreen extends AppCompatActivity implements SigninFragment.Sign
     @Override
     public void onSignUp(User user) {
 
-        userDAO.tryToConnect(user.getUsername(), null, new UserDAO.LoginEventListener() {
-            @Override
-            public void connect(User user, String password) {
-
-                if(user==null)
-                {
+//        userDAO.tryToConnect(user.getUsername(), null, new UserDAO.LoginEventListener() { 
+//            @Override
+//            public void connect(User user, String password) {
+//
+//                if(user==null)
+//                { //// FIXME: 30-03-17 why does it break here? 
                     String salt = getSecureSalt();
                     String encryptedPassword= get_SHA_512_SecurePassword(user.getPassword(),salt);
                     user.setSalt(salt);
@@ -113,18 +116,19 @@ public class UserScreen extends AppCompatActivity implements SigninFragment.Sign
                     userDAO.insert(user);
                     Toast.makeText(UserScreen.this,"Your account has been created",Toast.LENGTH_SHORT).show();
                     signInScreen();
-                }
-                else
-                {
-                    Toast.makeText(UserScreen.this,"this login already exists",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//                }
+//                else
+//                {
+//                    Toast.makeText(UserScreen.this,"this login already exists",Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
 
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
 
 

@@ -1,9 +1,10 @@
 package be.formation.mupacif.discovery.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 
-public class Interest {
+public class Interest  implements Serializable{
 
     private long id;
     private String title;

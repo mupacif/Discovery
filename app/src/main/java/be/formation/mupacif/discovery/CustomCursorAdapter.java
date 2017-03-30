@@ -18,6 +18,15 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     public final static String TAG = "CustomCursorAdapter";
     private Cursor cursor;
     private Context context;
+    private EventListener listener;
+    public void setEventListener(EventListener listener)
+    {
+        this.listener = listener;
+    }
+    public interface EventListener
+    {
+        public void onInterestClick(int position);
+    }
 
     public CustomCursorAdapter(Context context)
     {
@@ -60,13 +69,20 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         return cursor.getCount();
     }
 
-    class InterestViewHolder extends RecyclerView.ViewHolder
+    class InterestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+
     {
 
         TextView interstNameView;
         public InterestViewHolder(View itemView) {
             super(itemView);
             interstNameView = (TextView)itemView.findViewById(R.id.tv_interestTitle);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+                listener.onInterestClick(getAdapterPosition());
         }
     }
 

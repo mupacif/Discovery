@@ -2,14 +2,16 @@ package be.formation.mupacif.discovery.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+
 /**
  * Created by student on 20-03-17.
  */
-public class Location {
+public class Location implements Serializable {
 
     private long id;
     private String name;
-    private LatLng location;
+    private transient LatLng location;
 
     @Override
     public String toString() {

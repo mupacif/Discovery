@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import be.formation.mupacif.discovery.db.ContentProvider.DataContract;
