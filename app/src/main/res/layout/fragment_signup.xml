@@ -7,8 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        tools:text="Username"
+    <EditText
         android:hint="Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,28 +22,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.29" />
 
-    <TextView
-        tools:text="password"
+    <EditText
         android:hint="password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_signup_password"
         app:layout_constraintTop_toBottomOf="@+id/fragment_signup_username"
         app:layout_constraintLeft_toLeftOf="@+id/fragment_signup_username"
+        android:inputType="textPassword"
         android:layout_marginTop="40dp" />
 
-    <TextView
-        tools:text="confirm password"
-        android:hint="confirm password²"
+    <EditText
+        android:hint="confirm password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_signup_confirmpassword"
         app:layout_constraintTop_toBottomOf="@+id/fragment_signup_password"
         app:layout_constraintLeft_toLeftOf="@+id/fragment_signup_password"
+        android:inputType="textPassword"
         android:layout_marginTop="48dp" />
 
-    <TextView
-        android:text="Email"
+    <EditText
+        android:hint="Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_signup_email"
@@ -59,9 +58,9 @@
         android:id="@+id/fragment_signup_submit"
         app:layout_constraintTop_toBottomOf="@+id/fragment_signup_email"
         app:layout_constraintLeft_toLeftOf="@+id/fragment_signup_email"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="80dp"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginLeft="40dp" />
 </android.support.constraint.ConstraintLayout>
 
 </layout>

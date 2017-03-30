@@ -1,11 +1,8 @@
-package be.formation.mupacif.discovery.db;
+package be.formation.mupacif.discovery.db.LocalDatabase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import be.formation.mupacif.discovery.model.Interest;
-import be.formation.mupacif.discovery.model.Location;
 
 
 public class DbHelper extends SQLiteOpenHelper {

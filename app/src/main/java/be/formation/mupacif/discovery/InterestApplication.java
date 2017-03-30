@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import be.formation.mupacif.discovery.db.InterestDAO;
+import be.formation.mupacif.discovery.db.LocalDatabase.InterestDAO;
 import be.formation.mupacif.discovery.model.Interest;
 
 /**

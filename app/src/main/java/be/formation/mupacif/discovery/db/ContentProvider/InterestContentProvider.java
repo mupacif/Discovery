@@ -1,4 +1,4 @@
-package be.formation.mupacif.discovery.db;
+package be.formation.mupacif.discovery.db.ContentProvider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -11,7 +11,9 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import be.formation.mupacif.discovery.model.Interest;
+import be.formation.mupacif.discovery.db.LocalDatabase.DbHelper;
+import be.formation.mupacif.discovery.db.LocalDatabase.InterestDAO;
+import be.formation.mupacif.discovery.db.LocalDatabase.LocationDAO;
 
 /**
  * Created by student on 20-03-17.

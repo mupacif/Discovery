@@ -1,4 +1,4 @@
-package be.formation.mupacif.discovery.db;
+package be.formation.mupacif.discovery.db.LocalDatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,10 +9,9 @@ import android.provider.BaseColumns;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import be.formation.mupacif.discovery.model.Interest;
 import be.formation.mupacif.discovery.model.Location;
 
-import static be.formation.mupacif.discovery.db.DataContract.BASE_CONTENT_URI;
+import static be.formation.mupacif.discovery.db.ContentProvider.DataContract.BASE_CONTENT_URI;
 
 
 public class LocationDAO implements BaseColumns {

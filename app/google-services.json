@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "605184592471",
+    "firebase_url": "https://togethertoexplore.firebaseio.com",
+    "project_id": "togethertoexplore",
+    "storage_bucket": "togethertoexplore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605184592471:android:db568a7d8f35d11b",
+        "android_client_info": {
+          "package_name": "be.formation.mupacif.discovery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605184592471-vb7ru300t5akajgk0hlun25s7di7h2sp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3nt-UWSDUpnF3fzQAOJSQOy2lwklFkWU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,14 +3,13 @@ package be.formation.mupacif.discovery;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import be.formation.mupacif.discovery.db.InterestDAO;
+import be.formation.mupacif.discovery.db.LocalDatabase.InterestDAO;
 
 /**
  * Created by student on 20-03-17.

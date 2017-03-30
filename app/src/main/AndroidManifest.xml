@@ -20,7 +20,7 @@
         </activity>
 
         <provider
-            android:name=".db.InterestContentProvider"
+            android:name=".db.ContentProvider.InterestContentProvider"
             android:authorities="be.formation.mupacif.discovery"
             android:exported="false" />
 

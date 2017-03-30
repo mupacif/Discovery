@@ -1,4 +1,4 @@
-package be.formation.mupacif.discovery.db;
+package be.formation.mupacif.discovery.db.LocalDatabase;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -13,10 +13,11 @@ import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 
+import be.formation.mupacif.discovery.db.ContentProvider.DataContract;
 import be.formation.mupacif.discovery.model.Interest;
 import be.formation.mupacif.discovery.model.Location;
 
-import static be.formation.mupacif.discovery.db.DataContract.BASE_CONTENT_URI;
+import static be.formation.mupacif.discovery.db.ContentProvider.DataContract.BASE_CONTENT_URI;
 
 
 public class InterestDAO  extends ContentProvider implements BaseColumns{
@@ -35,7 +36,7 @@ public class InterestDAO  extends ContentProvider implements BaseColumns{
                                 +COL_DATE+" INTEGER NOT NULL,"
                                 +COL_LOCATION+" INTEGER,"
                                 +COL_DESCRIPTION+" TEXT,"
-                                +"FOREIGN KEY("+COL_LOCATION+") REFERENCES "+LocationDAO.TABLE_NAME+"("+LocationDAO._ID+")"
+                                +"FOREIGN KEY("+COL_LOCATION+") REFERENCES "+LocationDAO.TABLE_NAME+"("+ _ID +")"
                                 +");";
 
     public static final String UPGRADE_TABLE = "DROP TABLE "+TABLE_NAME;

@@ -19,10 +19,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import be.formation.mupacif.discovery.db.InterestDAO;
+import be.formation.mupacif.discovery.db.LocalDatabase.InterestDAO;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

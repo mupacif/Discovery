@@ -1,4 +1,4 @@
-package be.formation.mupacif.discovery.db;
+package be.formation.mupacif.discovery.db.ContentProvider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
