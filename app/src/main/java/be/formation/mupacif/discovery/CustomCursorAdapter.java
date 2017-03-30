@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 import be.formation.mupacif.discovery.db.LocalDatabase.InterestDAO;
 
-/**
- * Created by student on 20-03-17.
- */
+
 
 public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.InterestViewHolder> {
 
